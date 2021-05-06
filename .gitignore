@@ -1,0 +1,8 @@
+.DS_Store
+.idea/
+Figures/
+*vcf*
+*.tsv
+*.txt
+venv/
+*.bed
