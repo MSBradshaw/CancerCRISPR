@@ -11,4 +11,7 @@
 * --shift_size SHIFT    amount to slide the window by (default 100), should be <= than the window size
 
 ### Example:
-`python sliding_window.py --vcf example.g.vcf.gz --plot_output sliding_window.png --top_x 10 --dp 10 --window_size 1000 --shift_size 100 --output output.txt`
+Example data can be download from this publicly accessible [google drive](https://drive.google.com/file/d/15dYuplueDpu7giw3ysCdMh2FR_uihCeY/view) https://drive.google.com/file/d/15dYuplueDpu7giw3ysCdMh2FR_uihCeY/view
+
+
+`python sliding_window.py --vcf NCIH2170_LUNG.g.vcf.gz --plot_output sliding_window.png --top_x 10 --dp 10 --window_size 1000 --shift_size 100 --output output.txt`
