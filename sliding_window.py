@@ -41,6 +41,8 @@ def plot_sliding_window(data, output, threshold):
     :return: None
     """
     fig, axes = plt.subplots(23, 2)
+    for ax, col in zip(axes[0], ['DP > 10', 'Z Score # DP > 10']):
+        ax.set_title(col)
     # for each of the chromosomes
     for i, c in enumerate([str(x) for x in range(1, 22)] + ['X', 'Y']):
         print('plotting chromosome ' + c)
@@ -117,16 +119,20 @@ def get_args():
 
 def save_top_snps(data, vcf_obj, output):
     # get the top x SNPs in each region, ranked based on allele depth abs(difference) / number of alleles
-    blank_info = {'chr': [],
-                  'start': [],
-                  'end': [],
-                  'AD': [],
-                  'ratio': []}
     for i in range(data.shape[0]):
         row = data.iloc[i, :]
+        print('----------------------------------')
+        print(row['chr'])
         stuff = list(vcf_obj.fetch(row['chr'], row['start'], row['end']))
-        info = blank_info
+        info = {'chr': [],
+                  'start': [],
+                  'end': [],
+                  'ref': [],
+                  'alt': [],
+                  'AD': [],
+                  'ratio': []}
         for j in range(len(stuff)):
+            print('\t' + str(stuff[j].contig))
             tup = stuff[j].samples[0]['AD']
             # do the sum of absolute differences
             numerator = 0
@@ -139,6 +145,8 @@ def save_top_snps(data, vcf_obj, output):
             info['end'].append(stuff[j].stop)
             info['AD'].append(','.join([str(x) for x in stuff[j].samples[0]['AD']]))
             info['ratio'].append(ratio)
+            info['ref'].append(stuff[j].ref)
+            info['alt'].append(','.join(stuff[j].alts))
         temp = pd.DataFrame(info)
         temp = temp.sort_values('ratio', ascending=False)
         with open(output, 'a') as output_file:
